@@ -1,0 +1,19 @@
+#! /bin/bash
+
+#saca tu ip publica
+ip=$(curl ifconfig.me )
+
+#imprime la ip publica
+echo "Tu ip publica: $ip "
+
+traceroute -I $ip &>temp_cg-nat
+lineas=$(cat temp_cg-nat | wc -l )
+
+#Si el comando traceroute detecta MAS de 2 rutas con tu ip publica significa que  tu compañia utiliza la tecnologia cg-nat 
+#este comando imprime una linea adicional por lo que al imprimir la respuesta sera que si las lineas son mas de 3 entonces usas cg-nat
+
+if [ $lineas -gt 3 ];then
+echo "tu proveedor de internet utiliza cg-nat contigo."
+else
+echo "tu proveedor de internet NO utiliza cg-nat contigo."
+fi
